@@ -104,7 +104,7 @@ def cprop_se(
 @torch.jit.script
 def _cprop_scale(cdf, c: float):
     """scale given confidence (probability < 0)"""
-    return (2 * c * (cdf - 0.5).abs()).clamp(min=0)
+    return (2 * c * (cdf - 0.5).abs()).clamp(max=1)
 
 
 def cprop_scale_normal(m,
