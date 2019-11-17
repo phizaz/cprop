@@ -6,6 +6,7 @@ from .cprop_lib import *
 
 class CPropAdam(Optimizer):
     """
+    CProp-augmented Adam.
     Based on Pytorch's Adam.
     """
     def __init__(self,
@@ -138,7 +139,7 @@ class CPropAdam(Optimizer):
 
                 step_size = group['lr'] / bias_correction1
 
-                # p.data.addcdiv_(-step_size, exp_avg.mul_(scale), denom)
+                # scale the gradient update
                 p.data.add_(update(step_size, exp_avg, denom, scale))
 
         return loss

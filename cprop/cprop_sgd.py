@@ -6,6 +6,7 @@ from .cprop_lib import *
 
 class CPropSGD(Optimizer):
     """
+    CProp-augmented SGD. 
     Based on Pytorch's SGD.
     """
     def __init__(
@@ -86,6 +87,7 @@ class CPropSGD(Optimizer):
                 d_p = p.grad.data
                 state = self.state[p]
 
+                # calculate the cprop scales
                 s = cprop(state, d_p, beta, c, eps, cdf)
 
                 if weight_decay != 0:
@@ -103,6 +105,7 @@ class CPropSGD(Optimizer):
                     else:
                         d_p = buf
 
+                # scale the gradient update
                 p.data.addcmul_(-group['lr'], d_p, s)
 
         return loss

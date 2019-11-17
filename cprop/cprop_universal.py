@@ -7,7 +7,10 @@ from .cprop_lib import *
 
 
 class CProp(Optimizer):
-    """simple specific"""
+    """CProp optimizer wrapper.
+    To use CProp with any optimizer. 
+    However this is significantly SLOWER than its specialized counterparts.
+    """
     def __init__(
             self,
             optimizer: Optimizer,
