@@ -34,6 +34,16 @@ opt.step()
 
 `cprop_cdf` how to compute CDF. `normal` is the most correct way to do it (but slowest). `bft` using Logistic approximation which is ~10% faster with no observable performance loss.
 
+With any optimizer:
+
+```
+opt = any optimizer
+opt = cprop.CProp(opt, beta=0.999, c=1, cdf='normal')
+...
+# use it as usual
+opt.step()
+```
+
 
 
 
