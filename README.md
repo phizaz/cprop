@@ -44,6 +44,13 @@ opt = cprop.CProp(opt, beta=0.999, c=1, cdf='normal')
 opt.step()
 ```
 
+# Plots
+
+## Image classification:
+![alt text](https://raw.githubusercontent.com/phizaz/cprop/master/plots/cifar100-vgg-bn-github.png)
+
+## Language modeling:
+![alt text](https://raw.githubusercontent.com/phizaz/cprop/master/plots/ptb-lstm-dropout-github.png)
 
 
 
