@@ -115,6 +115,7 @@ class CPropAdam(Optimizer):
                 # cprop
                 # note: need to wait for moving averages to be calculated
                 # in case of sharing the averages
+                # but it needs to be before bias correction
                 scale = cprop(
                     state,
                     grad=grad,
