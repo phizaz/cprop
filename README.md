@@ -1,3 +1,5 @@
+Implementation of CProp in Pytorch.
+
 Paper is being reviewed.
 
 # Installation
@@ -11,8 +13,8 @@ pip install -e .
 
 # What's included 
 
-1. CPropSGD.
-2. CPropAdam.
+1. CPropSGD. CProp-augmented SGD.
+2. CPropAdam. CProp-augmented Adam.
 3. CProp universal wrapper. Slower but could be used with any optimizer.
 
 # Usage
@@ -20,7 +22,10 @@ pip install -e .
 ```
 import cprop
 
-cprop.CPropSGD(net.parameters(), lr=0.1, cprop_beta=0.999, cprop_c=1, cprop_cdf='normal')
+opt = cprop.CPropSGD(net.parameters(), lr=0.1, cprop_beta=0.999, cprop_c=1, cprop_cdf='normal')
+...
+# use it as usual
+opt.step()
 ```
 
 `cprop_beta` is the gradint horizon. Default 0.999 works well. 
