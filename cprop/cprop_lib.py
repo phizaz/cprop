@@ -85,13 +85,7 @@ def best_fit_one(loc, sd):
 
 
 @torch.jit.script
-def cprop_se(
-        m,
-        v,
-        t: float,
-        beta: float = 0.999,
-        eps: float = 1e-8,
-):
+def cprop_se(m, v, t: float, beta: float, eps: float):
     """calculate the standard error using moving statistics"""
     bias_correct = (1 - beta**t)
     m = m / bias_correct
@@ -107,12 +101,7 @@ def _cprop_scale(cdf, c: float):
     return (2 * c * (cdf - 0.5).abs()).clamp(max=1)
 
 
-def cprop_scale_normal(m,
-                       v,
-                       t: float,
-                       beta: float = 0.999,
-                       c: float = 1,
-                       eps: float = 1e-8):
+def cprop_scale_normal(m, v, t: float, beta: float, c: float, eps: float):
     m, se = cprop_se(m, v, t, beta, eps)
     # normal is not jit-able
     cdf = normal_cdf(m, se)
@@ -120,42 +109,21 @@ def cprop_scale_normal(m,
 
 
 @torch.jit.script
-def cprop_scale_bft(
-        m,
-        v,
-        t: float,
-        beta: float = 0.999,
-        c: float = 1,
-        eps: float = 1e-8,
-):
+def cprop_scale_bft(m, v, t: float, beta: float, c: float, eps: float):
     m, se = cprop_se(m, v, t, beta, eps)
     cdf = best_fit_two(m, se)
     return _cprop_scale(cdf, c)
 
 
 @torch.jit.script
-def cprop_scale_bfo(
-        m,
-        v,
-        t: float,
-        beta: float = 0.999,
-        c: float = 1,
-        eps: float = 1e-8,
-):
+def cprop_scale_bfo(m, v, t: float, beta: float, c: float, eps: float):
     m, se = cprop_se(m, v, t, beta, eps)
     cdf = best_fit_one(m, se)
     return _cprop_scale(cdf, c)
 
 
 @torch.jit.script
-def cprop_scale_logistic(
-        m,
-        v,
-        t: float,
-        beta: float = 0.999,
-        c: float = 1,
-        eps: float = 1e-8,
-):
+def cprop_scale_logistic(m, v, t: float, beta: float, c: float, eps: float):
     m, se = cprop_se(m, v, t, beta, eps)
     cdf = logistic_cdf(m, se)
     return _cprop_scale(cdf, c)
