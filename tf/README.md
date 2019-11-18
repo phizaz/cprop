@@ -18,7 +18,7 @@ if use_cprop:
     opt = CProp(opt, beta=0.999, c=1, cdf='bft')
 ```
 
-Options are the same as that of Pytorch. 
+Options are the same as that of [Pytorch](https://github.com/phizaz/cprop/tree/master)
 
 You can see example in `cprop_cifar10.ipynb`
 
