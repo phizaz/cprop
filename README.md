@@ -4,6 +4,10 @@ Paper is being reviewed.
 
 # Installation
 
+Requires Python with type-hint support (I guess 3.6+).
+
+It seems to require Pytorch 1.3 due to its use of JIT.
+
 ```
 # clone 
 ...
