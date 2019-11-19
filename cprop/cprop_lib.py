@@ -63,7 +63,7 @@ def best_fit_two(loc, sd):
     """
     return an approximation of cdf(0) with method proposed in:
     Bowling, Shannon R., Mohammad T. Khasawneh, Sittichai Kaewkuekool, and Byung Rae Cho. 2009. 
-    “A Logistic Approximation to the Cumulative Normal Distribution.” 
+    'A Logistic Approximation to the Cumulative Normal Distribution.'
     Journal of Industrial Engineering and Management 2 (1). 
     https://doi.org/10.3926/jiem.2009.v2n1.p114-127.
     """
@@ -76,7 +76,7 @@ def best_fit_one(loc, sd):
     """
     return an approximation of cdf(0) with method proposed in:
     Bowling, Shannon R., Mohammad T. Khasawneh, Sittichai Kaewkuekool, and Byung Rae Cho. 2009. 
-    “A Logistic Approximation to the Cumulative Normal Distribution.” 
+    'A Logistic Approximation to the Cumulative Normal Distribution.'
     Journal of Industrial Engineering and Management 2 (1). 
     https://doi.org/10.3926/jiem.2009.v2n1.p114-127.
     """
