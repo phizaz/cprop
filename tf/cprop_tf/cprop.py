@@ -27,9 +27,9 @@ class CProp(tf.keras.optimizers.Optimizer):
                 "optimizer is not an object of tf.keras.optimizers.Optimizer")
 
         self._optimizer = optimizer
-        self._set_hyper('beta', beta)
-        self._set_hyper('c', c)
-        self._set_hyper('eps', eps)
+        self._set_hyper('cprop_beta', beta)
+        self._set_hyper('cprop_c', c)
+        self._set_hyper('cprop_eps', eps)
         # we want to use python control flow
         self.cdf = cdf
 
@@ -37,8 +37,8 @@ class CProp(tf.keras.optimizers.Optimizer):
         self._optimizer._create_slots(var_list=var_list)
         # set slots for first and second moments
         for var in var_list:
-            self.add_slot(var, 'm')
-            self.add_slot(var, 'v')
+            self.add_slot(var, 'cprop_m')
+            self.add_slot(var, 'cprop_v')
 
     def _create_hypers(self):
         self._optimizer._create_hypers()
@@ -52,39 +52,15 @@ class CProp(tf.keras.optimizers.Optimizer):
 
     def _resource_apply_dense(self, grad, var):
         """main method"""
-        beta = self._get_hyper('beta')
-        c = self._get_hyper('c')
-        eps = self._get_hyper('eps')
+        beta = self._get_hyper('cprop_beta')
+        c = self._get_hyper('cprop_c')
+        eps = self._get_hyper('cprop_eps')
         t = tf.cast(self.iterations + 1, tf.dtypes.float32)
+        m = self.get_slot(var, 'cprop_m')
+        v = self.get_slot(var, 'cprop_v')
 
-        # moving averages
-        m = self.get_slot(var, 'm')
-        m_t = m.assign(beta * m + (1 - beta) * grad,
-                       use_locking=self._use_locking)
-        v = self.get_slot(var, 'v')
-        v_t = v.assign(beta * v + (1 - beta) * grad * grad,
-                       use_locking=self._use_locking)
-
-        # get standard error
-        bias_correct = (1 - beta**t)
-        m_hat = m_t / bias_correct
-        v_hat = v_t / bias_correct
-        n = bias_correct / (1 - beta)
-        variance = v_hat - m_hat**2
-        se = tf.math.sqrt(tf.math.maximum(variance, 0) / (n - 1 + eps)) + eps
-
-        # get the scale
-        if self.cdf == 'normal':
-            cdf = normal_cdf(m_hat, se)
-        elif self.cdf == 'bft':
-            cdf = best_fit_two(m_hat, se)
-        elif self.cdf == 'bfo':
-            cdf = best_fit_one(m_hat, se)
-        else:
-            raise NotImplementedError()
-        scale = tf.clip_by_value(2 * c * tf.math.abs(cdf - 0.5), 0, 1)
-        # tf.summary.scalar(f'{var.name}/scale', tf.math.reduce_mean(scale),
-        #                   self.iterations + 1)
+        # cprop scale
+        scale = cprop(grad, m, v, t, beta, c, eps, self.cdf, self._use_locking)
 
         # back a copy of var
         var_old = tf.identity(var)
@@ -106,9 +82,9 @@ class CProp(tf.keras.optimizers.Optimizer):
     def get_config(self):
         config = {
             'optimizer': tf.keras.optimizers.serialize(self._optimizer),
-            'beta': self._serialize_hyperparameter('beta'),
-            'c': self._serialize_hyperparameter('c'),
-            'eps': self._serialize_hyperparameter('eps'),
+            'cprop_beta': self._serialize_hyperparameter('cprop_beta'),
+            'cprop_c': self._serialize_hyperparameter('cprop_c'),
+            'cprop_eps': self._serialize_hyperparameter('cprop_eps'),
             'cdf': self.cdf,
         }
         base_config = super(CProp, self).get_config()
