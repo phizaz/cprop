@@ -23,6 +23,8 @@ pip install -e .
 
 ## `train.Optimizer` style:
 
+Note: this is even more experimental!
+
 ```
 from cprop_tf.cprop_tf1 import CProp
 
