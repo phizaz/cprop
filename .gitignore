@@ -1,5 +1,6 @@
 .vscode
 cprop.egg-info
+cprop_tf.egg-info
 __pycache__
 runs
 .ipynb_checkpoints
