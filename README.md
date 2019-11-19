@@ -8,7 +8,7 @@ Paper is being reviewed.
 
 Requires Python with type-hint support (I guess 3.6+).
 
-It seems to require Pytorch 1.3 due to its use of JIT.
+It seems to require Pytorch 1.2 due to its use of JIT.
 
 ```
 # clone 
@@ -51,6 +51,9 @@ opt.step()
 ```
 
 # Plots
+
+## Quick test on Cifar10
+![alt text](https://raw.githubusercontent.com/phizaz/cprop/master/cifar10_small.png)
 
 ## Image classification:
 ![alt text](https://raw.githubusercontent.com/phizaz/cprop/master/plots/cifar100-vgg-bn-github.png)
