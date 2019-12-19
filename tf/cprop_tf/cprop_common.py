@@ -1,5 +1,4 @@
 import tensorflow as tf
-from tensorflow_probability import distributions
 
 
 def cprop(grad, m, v, t, beta, c, eps, cdf: str, use_locking):
@@ -30,6 +29,7 @@ def cprop(grad, m, v, t, beta, c, eps, cdf: str, use_locking):
 
 def normal_cdf(loc, sd):
     """normal cdf(0)"""
+    from tensorflow_probability import distributions
     # it is not jit-able
     d = distributions.Normal(loc, sd)
     return d.cdf(0)
