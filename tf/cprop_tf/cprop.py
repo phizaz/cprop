@@ -33,6 +33,10 @@ class CProp(tf.keras.optimizers.Optimizer):
         # we want to use python control flow
         self.cdf = cdf
 
+    @property
+    def lr(self):
+        return self._optimizer.lr
+
     def _create_slots(self, var_list):
         self._optimizer._create_slots(var_list=var_list)
         # set slots for first and second moments

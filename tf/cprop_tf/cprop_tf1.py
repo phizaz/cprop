@@ -36,6 +36,10 @@ class CProp(tf.compat.v1.train.Optimizer):
         self._c_t = None
         self._eps_t = None
 
+    @property
+    def lr(self):
+        return self._optimizer.lr
+
     def _get_step(self):
         with tf.init_scope():
             if context.executing_eagerly():
