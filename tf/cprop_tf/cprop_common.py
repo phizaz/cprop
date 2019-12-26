@@ -7,10 +7,12 @@ def cprop(grad, m, v, t, beta, c, eps, cdf: str, use_locking):
     v = v.assign(beta * v + (1 - beta) * grad * grad, use_locking=use_locking)
 
     # get standard error
-    bias_correct = (1 - beta**t)
-    m_hat = m / bias_correct
-    v_hat = v / bias_correct
-    n = bias_correct / (1 - beta)
+    bias_correct = 1 - beta**t
+    # support for fp16
+    _bias_correct = tf.cast(bias_correct, m.dtype)
+    m_hat = m / _bias_correct
+    v_hat = v / _bias_correct
+    n = tf.cast(bias_correct / (1 - beta), m.dtype)
     variance = v_hat - m_hat**2
     se = tf.math.sqrt(tf.math.maximum(variance, 0) / (n - 1 + eps)) + eps
 
