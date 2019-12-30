@@ -1,6 +1,8 @@
 Implementation of CProp in Pytorch.
 
-[Looking for Tensorflow?](https://github.com/phizaz/cprop/tree/master/tf)
+[Looking for Tensorflow version?](https://github.com/phizaz/cprop/tree/master/tf)
+
+A preprint Arxiv version can be found at https://arxiv.org/abs/1912.11493.
 
 Paper is being reviewed.
 
