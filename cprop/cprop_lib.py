@@ -23,10 +23,12 @@ def cprop(state, grad, beta, c, eps, cdf, m=None, v=None):
 
     if m is None:
         m = state['cprop_m']
-        m.mul_(beta).add_(1 - beta, grad)
+        # m.mul_(beta).add_(1 - beta, grad)
+        _update_avg_x(m, grad, beta)
     if v is None:
         v = state['cprop_v']
-        v.mul_(beta).addcmul_(1 - beta, grad, grad)
+        # v.mul_(beta).addcmul_(1 - beta, grad, grad)
+        _update_avg_sq(v, grad, beta)
 
     state['cprop_t'] += 1
     t = state['cprop_t']
@@ -42,6 +44,16 @@ def cprop(state, grad, beta, c, eps, cdf, m=None, v=None):
     else:
         raise NotImplementedError()
     return s
+
+
+@torch.jit.script
+def _update_avg_x(m, x, beta: float):
+    m += (1 - beta) * (x - m)
+
+
+@torch.jit.script
+def _update_avg_sq(m, x, beta: float):
+    m += (1 - beta) * (x * x - m)
 
 
 def normal_cdf(loc, sd):
