@@ -1,10 +1,14 @@
+# CProp: Adaptive Learning Rate Scaling from Past Gradient Conformity
+
 Implementation of CProp in Pytorch.
 
-[Looking for Tensorflow?](https://github.com/phizaz/cprop/tree/master/tf)
+[Looking for Tensorflow version?](https://github.com/phizaz/cprop/tree/master/tf)
+
+A preprint Arxiv version can be found at https://arxiv.org/abs/1912.11493.
 
 Paper is being reviewed.
 
-# Installation
+## Installation
 
 Requires Python with type-hint support (I guess 3.6+).
 
@@ -17,13 +21,13 @@ It seems to require Pytorch 1.2 due to its use of JIT.
 pip install -e .
 ```
 
-# What's included 
+## What's included 
 
 1. CPropSGD. CProp-augmented SGD.
 2. CPropAdam. CProp-augmented Adam.
 3. CProp universal wrapper. Slower but could be used with any optimizer.
 
-# Usage
+## Usage
 
 ```
 import cprop
@@ -50,15 +54,15 @@ opt = cprop.CProp(opt, beta=0.999, c=1, cdf='normal')
 opt.step()
 ```
 
-# Plots
+## Plots
 
-## Quick test on Cifar10
+### Quick test on Cifar10
 ![alt text](https://raw.githubusercontent.com/phizaz/cprop/master/cifar10_small.png)
 
-## Image classification:
+### Image classification:
 ![alt text](https://raw.githubusercontent.com/phizaz/cprop/master/plots/cifar100-vgg-bn-github.png)
 
-## Language modeling:
+### Language modeling:
 ![alt text](https://raw.githubusercontent.com/phizaz/cprop/master/plots/ptb-lstm-dropout-github.png)
 
 
