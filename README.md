@@ -38,7 +38,7 @@ opt = cprop.CPropSGD(net.parameters(), lr=0.1, cprop_beta=0.999, cprop_c=1, cpro
 opt.step()
 ```
 
-`cprop_beta` is the gradint horizon. Default 0.999 works well. 
+`cprop_beta` is the gradint horizon. [0.999, 0.9997, 0.9999] work well depending on how long is your training job. You should choose for a larger `cprop_beta` if you aim to train for longer.
 
 `cprop_c` is overconfidence coefficient. Default 1. Try it first. If you want better generalization, use larger `c`, e.g. 3, 5.
 
